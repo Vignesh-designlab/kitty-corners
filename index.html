@@ -342,7 +342,7 @@ img{max-width:100%}
           <h3>How a round works</h3>
           <ul class="howto">
             <li><span class="n">1</span><span>A 3-second countdown, then the same board appears for everyone, with one cat already revealed to start you off.</span></li>
-            <li><span class="n">2</span><span><b>Double-tap</b> to place a cat. <b>Single-tap</b> to mark an X where you're sure there's no cat, or <b>swipe</b> to mark several. Squares a cat rules out are crossed off for you.</span></li>
+            <li><span class="n">2</span><span><b>Double-tap</b> to place a cat. <b>Single-tap</b> to mark an X where you're sure there's no cat, or <b>swipe</b> to mark several. Crossing off is up to you, just like the app.</span></li>
             <li><span class="n">3</span><span>A wrong cat costs a life (3 per round). Out of lives? Your round ends, but your cats still score. Stuck? Tap the <b>bulb</b> for a hint.</span></li>
             <li><span class="n">4</span><span>Fastest finish wins the round. Out of time? You still score for every cat you placed.</span></li>
           </ul>
@@ -490,7 +490,7 @@ function nextStep(n,reg,cells){
   const name=g=>g.kind==="patch"?`${COLOR_NAMES[g.k]} patch`:`${g.kind} ${g.k+1}`;
   // 1. a patch, row or column with only one open square
   for(const g of groups){if(g.cells.some(i=>cells[i]===2))continue;const o=g.cells.filter(i=>cells[i]===0);
-    if(o.length===1)return{type:"cat",cell:o[0],group:g.cells,title:`Only one square left in the ${name(g)}`,text:`Every other square there is crossed off, so its cat must go on the glowing square. Double-tap it.`};}
+    if(o.length===1)return{type:"cat",cell:o[0],group:g.cells,title:`Only one square left in the ${name(g)}`,text:`Every other square there is ruled out by a cat's row, column or neighbours, so its cat must go on the glowing square. Double-tap it.`};}
   // 2. a patch squeezed into one row/column rules out the rest of that line (and the reverse)
   for(const g of groups){if(g.cells.some(i=>cells[i]===2))continue;const o=g.cells.filter(i=>cells[i]===0);if(o.length<2)continue;
     const rows=new Set(o.map(i=>Math.floor(i/n))),cols=new Set(o.map(i=>i%n)),pats=new Set(o.map(i=>reg[i]));
@@ -735,7 +735,7 @@ function startPlay(mode){
     cells:new Array(n*n).fill(0),cats:0,mistakes:0,paidHints:0,lives:mode==="round"?cfg.lives:3,maxLives:mode==="round"?cfg.lives:3,cleared:new Set(),hints:mode==="round"?cfg.hints:"free",limit:mode==="round"?cfg.limit*1000:0,
     st:mode==="tutorial"?"play":"count",countStart:performance.now(),start:performance.now(),elapsed:0,hint:null,lastCount:null};
   {let st=Number.isInteger(pz.start)?pz.start:(n>0?pz.sol[0]:-1);
-    if(st>=0&&st<n*n&&play.sol[Math.floor(st/n)]===st%n){play.cells[st]=2;play.cats=1;autoCross(st);}}
+    if(st>=0&&st<n*n&&play.sol[Math.floor(st/n)]===st%n){play.cells[st]=2;play.cats=1;}}
   buildBoard();pushProgress();
   if(mode==="tutorial")tutorialCoach(true);else quietCoach();
   render();runTimer();
@@ -822,7 +822,7 @@ function placeCat(i){
   if(v===4)play.cells[i]=0;
   const r=Math.floor(i/n),c=i%n;
   if(play.sol[r]===c){
-    play.cells[i]=2;play.cats++;autoCross(i);play.hint=null;paintBoard();
+    play.cells[i]=2;play.cats++;play.hint=null;paintBoard();
     if(play.cats===n){quietCoach();play.st="done";play.elapsed=performance.now()-play.start;stopTimer();$("#hudTimer").textContent=fmt(play.elapsed);renderOverlay();if(play.mode==="round")burst(60);}
     else if(play.mode==="tutorial")tutorialCoach(false);
     else quietCoach();
@@ -855,9 +855,9 @@ function tutorialCoach(first){
   for(let g=0;s&&s.type==="cross"&&g<20;g++){s.cells.forEach(i=>play.cells[i]=1);s=nextStep(play.n,play.reg,hintView());}
   if(!s){setCoach("Keep going","Tap Hint if you want a nudge.");return;}
   setHint({glow:[s.cell],group:s.group});
-  if(first){setCoach("Welcome! One cat is already revealed","See the crosses? That cat rules out its row, its column and the 8 squares around it. Find the other 3: one per colour, row and column, and cats never touch. Double-tap the glowing square.","hint");
+  if(first){setCoach("Welcome! One cat is already revealed","That cat rules out its row, its column and the 8 squares around it. Tap those squares to mark them with an X (or swipe across them). Then find the other 3 cats. The glowing square is your next one: double-tap it.","hint");
     setTimeout(()=>{if(play&&play.mode==="tutorial"&&play.cats===1)setCoach(s.title,s.text,"hint");},5000);return;}
-  setCoach(play.cats===2?"Nice! Your cat crossed off its row, column and neighbours too.":s.title,play.cats===2?`${s.title}. ${s.text}`:s.text,"hint");
+  setCoach(play.cats===2?"Nice! Now cross off the squares your new cat rules out.":s.title,play.cats===2?`Tap or swipe its row, column and neighbours to mark X's. ${s.title}: ${s.text}`:s.text,"hint");
 }
 function tapCell(i){
   if(!canAct())return;const v=play.cells[i];
