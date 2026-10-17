@@ -341,7 +341,7 @@ img{max-width:100%}
         <div class="card stack">
           <h3>How a round works</h3>
           <ul class="howto">
-            <li><span class="n">1</span><span>A 3-second countdown, then the same board appears for everyone.</span></li>
+            <li><span class="n">1</span><span>A 3-second countdown, then the same board appears for everyone, with one cat already revealed to start you off.</span></li>
             <li><span class="n">2</span><span><b>Double-tap</b> to place a cat. <b>Single-tap</b> to mark an X where you're sure there's no cat, or <b>swipe</b> to mark several. Squares a cat rules out are crossed off for you.</span></li>
             <li><span class="n">3</span><span>A wrong cat costs a life (3 per round). Out of lives? Your round ends, but your cats still score. Stuck? Tap the <b>bulb</b> for a hint.</span></li>
             <li><span class="n">4</span><span>Fastest finish wins the round. Out of time? You still score for every cat you placed.</span></li>
@@ -656,7 +656,8 @@ async function flush(){
   finally{wBusy=false;}
 }
 function commit(mut){if(!isHost())return;const next=S?JSON.parse(JSON.stringify(S)):{};mut(next);next.updatedAt=Date.now();S=next;flush();onState();}
-function newRoundFields(s,k){const n=roundSize(s.cfg,k);s.round=k;s.roundId=rid();s.puzzle=makePuzzle(n);s.roundStart=Date.now();s.results={};s.status="round";}
+function withStart(pz){if(pz){const r=Math.floor(Math.random()*pz.n);pz.start=r*pz.n+pz.sol[r];}return pz;}
+function newRoundFields(s,k){const n=roundSize(s.cfg,k);s.round=k;s.roundId=rid();s.puzzle=withStart(makePuzzle(n));s.roundStart=Date.now();s.results={};s.status="round";}
 function startGame(cfg){commit(s=>{for(const k of Object.keys(s))delete s[k];s.v=3;s.gameId=rid();s.cfg={...cfg};s.totals={};s.history=[];newRoundFields(s,1);});}
 function nextRound(){commit(s=>{if(s.round>=s.cfg.rounds){s.status="final";return;}newRoundFields(s,s.round+1);});}
 function toLobby(cfg){commit(s=>{const c=cfg||s.cfg||DEFAULT_CFG;for(const k of Object.keys(s))delete s[k];s.v=3;s.status="lobby";s.cfg={...c};});}
@@ -727,12 +728,14 @@ function onState(){
 let timerRAF=null;
 function startPlay(mode){
   let pz;
-  if(mode==="round")pz=S.puzzle;else if(mode==="tutorial")pz=makePuzzle(4,{easy:true});else pz=makePuzzle(5);
+  if(mode==="round")pz=S.puzzle;else if(mode==="tutorial")pz=withStart(makePuzzle(4,{easy:true}));else pz=withStart(makePuzzle(6));
   if(!pz)return;
   const n=pz.n,cfg=cfgOf(S);
   play={mode,gid:mode==="round"?S.gameId:null,rid:mode==="round"?S.roundId:null,round:mode==="round"?S.round:0,n,reg:[...pz.reg].map(Number),sol:pz.sol.slice(),
     cells:new Array(n*n).fill(0),cats:0,mistakes:0,paidHints:0,lives:mode==="round"?cfg.lives:3,maxLives:mode==="round"?cfg.lives:3,cleared:new Set(),hints:mode==="round"?cfg.hints:"free",limit:mode==="round"?cfg.limit*1000:0,
     st:mode==="tutorial"?"play":"count",countStart:performance.now(),start:performance.now(),elapsed:0,hint:null,lastCount:null};
+  {let st=Number.isInteger(pz.start)?pz.start:(n>0?pz.sol[0]:-1);
+    if(st>=0&&st<n*n&&play.sol[Math.floor(st/n)]===st%n){play.cells[st]=2;play.cats=1;autoCross(st);}}
   buildBoard();pushProgress();
   if(mode==="tutorial")tutorialCoach(true);else quietCoach();
   render();runTimer();
@@ -852,9 +855,9 @@ function tutorialCoach(first){
   for(let g=0;s&&s.type==="cross"&&g<20;g++){s.cells.forEach(i=>play.cells[i]=1);s=nextStep(play.n,play.reg,hintView());}
   if(!s){setCoach("Keep going","Tap Hint if you want a nudge.");return;}
   setHint({glow:[s.cell],group:s.group});
-  if(first){setCoach("Welcome! Find the 4 hidden cats","One cat per colour patch, one per row and column, and cats never touch. Double-tap the glowing square to place your first cat.","hint");
-    setTimeout(()=>{if(play&&play.mode==="tutorial"&&play.cats===0)setCoach(s.title,s.text,"hint");},3500);return;}
-  setCoach(play.cats===1?"See the crosses? Your cat ruled out its row, column and the 8 squares around it.":s.title,play.cats===1?`${s.title}. ${s.text}`:s.text,"hint");
+  if(first){setCoach("Welcome! One cat is already revealed","See the crosses? That cat rules out its row, its column and the 8 squares around it. Find the other 3: one per colour, row and column, and cats never touch. Double-tap the glowing square.","hint");
+    setTimeout(()=>{if(play&&play.mode==="tutorial"&&play.cats===1)setCoach(s.title,s.text,"hint");},5000);return;}
+  setCoach(play.cats===2?"Nice! Your cat crossed off its row, column and neighbours too.":s.title,play.cats===2?`${s.title}. ${s.text}`:s.text,"hint");
 }
 function tapCell(i){
   if(!canAct())return;const v=play.cells[i];
@@ -969,12 +972,12 @@ function renderOverlay(count){
   o.textContent="";
   if(play.st==="count"){o.hidden=false;const d=el("div","stack");d.style.alignItems="center";d.style.gap="6px";
     d.appendChild(el("div","label",play.mode==="practice"?"Practice board":`Round ${play.round}`));d.appendChild(el("div","big",String(count||3)));
-    d.appendChild(el("div","muted","One cat per colour, row and column. Cats never touch."));o.appendChild(d);return;}
+    d.appendChild(el("div","muted","One cat is revealed to start you off. One cat per colour, row and column, and cats never touch."));o.appendChild(d);return;}
   if(play.st==="play"){o.hidden=true;return;}
   o.hidden=false;const d=el("div","stack");d.style.alignItems="center";
   if(play.st==="done"){
     d.appendChild(el("h2",null,play.mode==="tutorial"?"You've got it!":"Every cat has its corner!"));
-    if(play.mode==="tutorial")d.appendChild(el("div","muted","That's the whole game. Real boards are a bit bigger, and the Hint button is there whenever you're stuck."));
+    if(play.mode==="tutorial")d.appendChild(el("div","muted","That's the whole game. Real boards are a bit bigger and also start with one cat revealed. Tap the bulb whenever you're stuck."));
     else{const extra=play.mistakes*WRONG_COST+(play.mode==="round"&&play.hints==="paid"?play.paidHints*HINT_COST:0);d.appendChild(el("div","mono",`${fmt(play.elapsed)}${extra?`  + ${extra}s`:""}`));}
   }else{d.appendChild(el("h2",null,play.reason==="lives"?"Out of lives":"Time's up"));d.appendChild(el("div","muted",`You placed ${play.cats} of ${play.n} cats. They still count for points.`));}
   if(play.mode!=="round"){
