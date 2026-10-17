@@ -13,7 +13,7 @@
   --bg:#f5f1f7; --surface:#ffffff; --sunk:#ece6f0; --ink:#2a2233; --muted:#6c6277; --line:#dbd3e1;
   --accent:#f0832a; --accent-ink:#2b1300; --accent-soft:#fde3cc; --good:#24885a; --bad:#cf3a55; --gold:#d6a01e;
   --edge:#2a2233; --cat:#2a2233; --cat-eye:#fff7e8; --x:#8b8096;
-  --r0:#ffd3a8; --r1:#f8ef9e; --r2:#c4ecb5; --r3:#a9e4ec; --r4:#b3cbf7; --r5:#cdbff7; --r6:#f6c1ec; --r7:#ffb8b0; --r8:#d9e1c4; --r9:#c9d6dd;
+  --r0:#f3a6c6; --r1:#3fa7a1; --r2:#a3623f; --r3:#e2b13d; --r4:#9fcd86; --r5:#8e6ad3; --r6:#5d8fd8; --r7:#ef7f63; --r8:#d9e1c4; --r9:#c9d6dd;
   --c0:#f0832a; --c1:#3b3342; --c2:#9a90a3; --c3:#e2bf86; --c4:#b45f2c; --c5:#7a8fb8; --c6:#e7e2d9; --c7:#c25b84;
   --f-display:"Grandstander","Comic Neue","Trebuchet MS",system-ui,sans-serif;
   --f-body:"Figtree","Segoe UI",system-ui,sans-serif;
@@ -24,13 +24,13 @@
   --bg:#19141f; --surface:#241d2c; --sunk:#2d2537; --ink:#f2ecf7; --muted:#a89db3; --line:#3b3247;
   --accent:#ff9a45; --accent-ink:#2b1300; --accent-soft:#4a2f1d; --good:#4cc38a; --bad:#ff6e86; --gold:#f0c24a;
   --edge:#0c090f; --cat:#1a1420; --cat-eye:#ffe7b8; --x:#5e5268;
-  --r0:#e8b07b; --r1:#ddd07a; --r2:#9fcf8e; --r3:#82c6cf; --r4:#8eaae0; --r5:#ab9ae0; --r6:#dc9bd0; --r7:#e8958c; --r8:#b9c49e; --r9:#a5b6bf;
+  --r0:#f3a6c6; --r1:#3fa7a1; --r2:#a3623f; --r3:#e2b13d; --r4:#9fcd86; --r5:#8e6ad3; --r6:#5d8fd8; --r7:#ef7f63; --r8:#d9e1c4; --r9:#c9d6dd;
   --c6:#d7d0c4; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#19141f; --surface:#241d2c; --sunk:#2d2537; --ink:#f2ecf7; --muted:#a89db3; --line:#3b3247;
   --accent:#ff9a45; --accent-ink:#2b1300; --accent-soft:#4a2f1d; --good:#4cc38a; --bad:#ff6e86; --gold:#f0c24a;
   --edge:#0c090f; --cat:#1a1420; --cat-eye:#ffe7b8; --x:#5e5268;
-  --r0:#e8b07b; --r1:#ddd07a; --r2:#9fcf8e; --r3:#82c6cf; --r4:#8eaae0; --r5:#ab9ae0; --r6:#dc9bd0; --r7:#e8958c; --r8:#b9c49e; --r9:#a5b6bf;
+  --r0:#f3a6c6; --r1:#3fa7a1; --r2:#a3623f; --r3:#e2b13d; --r4:#9fcd86; --r5:#8e6ad3; --r6:#5d8fd8; --r7:#ef7f63; --r8:#d9e1c4; --r9:#c9d6dd;
   --c6:#d7d0c4; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{min-height:100%}
@@ -106,12 +106,11 @@ button{cursor:pointer}
 .lives svg{width:22px;height:22px}
 .lives .lost{opacity:.22}
 .board-wrap{position:relative;width:min(100%,560px);margin:0 auto}
-.board{display:grid;width:100%;aspect-ratio:1;border:3px solid var(--edge);border-radius:12px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
-.cell{position:relative;border:0;padding:0;border-style:solid;border-color:var(--edge);border-width:0;background:var(--rc);outline-offset:-3px}
+.board{display:grid;width:100%;aspect-ratio:1;gap:4px;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px color-mix(in srgb,var(--ink) 10%,transparent);touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{position:relative;border:0;padding:0;border-radius:5px;background:var(--rc);outline-offset:-3px}
 .cell .x{position:absolute;inset:30%;opacity:.9}
 .cell .x::before,.cell .x::after{content:"";position:absolute;left:50%;top:-6%;width:12%;height:112%;background:var(--x);border-radius:4px;transform:translateX(-50%) rotate(45deg)}
 .cell .x::after{transform:translateX(-50%) rotate(-45deg)}
-.cell .x.auto{opacity:.45}
 .cell.wrong .x::before,.cell.wrong .x::after{background:var(--bad)}
 .cell svg{position:absolute;inset:10%;width:80%;height:80%;color:var(--cat);animation:pop .22s ease-out}
 .cell.flash{animation:shake .32s}
@@ -202,6 +201,35 @@ img{max-width:100%}
   .hud .timer{font-size:22px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* app-style board details */
+.cell .x::before,.cell .x::after{background:#fff!important;width:14%!important;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.cell.wrong .x::before,.cell.wrong .x::after{background:#ff5a1f!important}
+.cell .tux{position:absolute;inset:4%;width:92%;height:92%;animation:pop .22s ease-out}
+.cell.glow{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px var(--accent)}
+.cell.grp::before{background:rgba(255,255,255,.28)}
+.burst{position:absolute;inset:18%;display:grid;place-items:center;font-size:clamp(20px,6vw,34px);animation:pop .2s ease-out;pointer-events:none}
+.clear-tag{position:absolute;z-index:5;transform:translate(-50%,-50%);font-family:var(--f-display);font-weight:800;font-size:clamp(16px,4.6vw,22px);color:#ffcf3a;-webkit-text-stroke:1.5px #7a3c12;paint-order:stroke fill;pointer-events:none;animation:clearUp 1.1s ease-out forwards;white-space:nowrap}
+@keyframes clearUp{0%{opacity:0;transform:translate(-50%,-30%) scale(.7)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-90%) scale(1)}}
+.hud2{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:10px}
+.lives2{display:flex;gap:4px}
+.lives2 svg{width:26px;height:26px}
+.lives2 .gone{opacity:.25;filter:grayscale(1)}
+.rulestrip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;max-width:560px}
+.rulestrip div{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 8px;font-size:12px;line-height:1.2;font-weight:600}
+.rulestrip svg{width:26px;height:26px;flex:none}
+.tracker{display:flex;gap:2px;justify-content:center;background:var(--surface);border:1px solid var(--line);border-bottom:0;border-radius:12px 12px 0 0;padding:4px 10px 2px;margin:0 auto -1px;width:max-content;max-width:100%}
+.tracker svg{width:22px;height:22px}
+.say{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;z-index:6;box-shadow:0 4px 14px rgba(0,0,0,.18);white-space:nowrap;animation:pop .2s ease-out}
+.coach.quiet{display:none}
+.toolsbar{display:flex;justify-content:center;gap:14px;margin-top:14px;align-items:center}
+.roundbtn{width:58px;height:58px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.roundbtn svg{width:30px;height:30px}
+.roundbtn .badge{position:absolute;top:-4px;right:-4px;background:#e5383b;color:#fff;font-size:12px;font-weight:800;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 5px}
+.roundbtn:disabled{opacity:.4}
+.hudtop{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:560px}
+.hudtop .blk{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.hudtop .blk b{font-family:var(--f-display);font-size:22px}
 </style>
 </head>
 <body>
@@ -225,6 +253,16 @@ img{max-width:100%}
     <ellipse cx="20.4" cy="17.4" rx="1.9" ry="2.3" style="fill:var(--cat-eye)"/>
     <path d="M14.6 21.4h2.8L16 23z" style="fill:var(--cat-eye)"/>
   </symbol>
+  <symbol id="tux" viewBox="0 0 32 32">
+    <path fill="#232027" d="M5.2 3.6c.3-.5 1-.6 1.4-.2l5.6 5.4c1.2-.4 2.5-.6 3.8-.6s2.6.2 3.8.6l5.6-5.4c.4-.4 1.1-.3 1.4.2.2.3.2.6.2.9l-.7 9.3c.8 1.4 1.2 3 1.2 4.7 0 6-5.2 9.8-11.5 9.8S4.5 24.5 4.5 18.5c0-1.7.4-3.3 1.2-4.7L5 4.5c0-.3 0-.6.2-.9z"/>
+    <path fill="#f6f2ee" d="M16 12.2c1 2 1.4 4 3.6 5.2 2.6 1.4 4.6 2.6 4.6 4.9 0 3.4-3.8 5.6-8.2 5.6s-8.2-2.2-8.2-5.6c0-2.3 2-3.5 4.6-4.9 2.2-1.2 2.6-3.2 3.6-5.2z"/>
+    <path fill="#f3a9b8" d="M7.2 6.6l3.4 3.3-3.8 1.3zM24.8 6.6l-3.4 3.3 3.8 1.3z"/>
+    <ellipse cx="11.4" cy="16.6" rx="2.3" ry="2.6" fill="#fff"/><ellipse cx="20.6" cy="16.6" rx="2.3" ry="2.6" fill="#fff"/>
+    <circle cx="11.7" cy="17" r="1.4" fill="#232027"/><circle cx="20.3" cy="17" r="1.4" fill="#232027"/>
+    <path d="M14.8 20.6h2.4L16 22z" fill="#e88aa0"/>
+  </symbol>
+  <symbol id="fish" viewBox="0 0 32 32"><path fill="#f2a33a" d="M3 16c4-6 10-8 16-6l7-5v22l-7-5c-6 2-12 0-16-6z"/><circle cx="9" cy="14.5" r="1.6" fill="#7a3c12"/><path d="M14 11c1.5 3 1.5 7 0 10" stroke="#d47f1c" stroke-width="1.6" fill="none"/></symbol>
+  <symbol id="bulb" viewBox="0 0 32 32"><path fill="#ffc533" d="M16 3a9 9 0 0 0-5.4 16.2c1 .8 1.6 1.9 1.6 3.1V24h7.6v-1.7c0-1.2.6-2.3 1.6-3.1A9 9 0 0 0 16 3z"/><rect x="12" y="25" width="8" height="2.4" rx="1.2" fill="#8a7a6a"/><rect x="13" y="28.2" width="6" height="2" rx="1" fill="#8a7a6a"/></symbol>
 </svg>
 
 <div class="wrap">
@@ -240,7 +278,7 @@ img{max-width:100%}
     <div class="hero">
       <div>
         <h1>Give every cat its <em>own corner.</em></h1>
-        <p class="lede">A friendly logic race for the whole team. No sign-up: type the room code and your name. Nobody gets knocked out, and a Hint button shows you the next move.</p>
+        <p class="lede">A friendly logic race for the whole team. No sign-up: type the room code and your name. Everyone gets the same board at once, and the hint bulb shows you the next move.</p>
         <div class="cta-row"><button class="btn primary" id="tutorialBtn">Learn in 60 seconds</button><button class="btn ghost" id="practiceBtn">Practice board</button></div>
       </div>
       <div class="rules" id="rules"></div>
@@ -288,6 +326,7 @@ img{max-width:100%}
             <div class="field"><span class="label">Board size</span><div class="seg" id="sSize"></div></div>
             <div class="field"><span class="label">Time per round</span><div class="seg" id="sLimit"></div></div>
             <div class="field"><span class="label">Hints</span><div class="seg" id="sHints"></div></div>
+            <div class="field"><span class="label">Lives per round</span><div class="seg" id="sLives"></div></div>
           </div>
           <div class="field"><span class="label">Scoring</span><div class="seg" id="sScoring"></div></div>
           <label class="toggle"><input type="checkbox" id="sRamp"> Make each round one size bigger (stops at 8×8)</label>
@@ -304,7 +343,7 @@ img{max-width:100%}
           <ul class="howto">
             <li><span class="n">1</span><span>A 3-second countdown, then the same board appears for everyone.</span></li>
             <li><span class="n">2</span><span><b>Double-tap</b> to place a cat. <b>Single-tap</b> to mark an X where you're sure there's no cat, or <b>swipe</b> to mark several. Squares a cat rules out are crossed off for you.</span></li>
-            <li><span class="n">3</span><span>A wrong cat adds 5 seconds. Stuck? Tap <b>Hint</b> and the coach shows the next move and why.</span></li>
+            <li><span class="n">3</span><span>A wrong cat costs a life (3 per round). Out of lives? Your round ends, but your cats still score. Stuck? Tap the <b>bulb</b> for a hint.</span></li>
             <li><span class="n">4</span><span>Fastest finish wins the round. Out of time? You still score for every cat you placed.</span></li>
           </ul>
           <div class="row"><button class="btn ghost small" id="lobbyTutorial">Try the 60-second tutorial</button><button class="btn ghost small" id="leaveBtn">Leave room</button></div>
@@ -317,19 +356,25 @@ img{max-width:100%}
   <section id="vGame" hidden>
     <div class="game">
       <div>
-        <div class="hud">
-          <span class="round" id="hudRound">Round 1</span>
-          <span class="pill mono" id="hudSize">5×5</span>
-          <span class="pill slips" id="hudSlips">+0s</span>
-          <span class="timer" id="hudTimer">0:00.0</span>
+        <div class="hud2">
+          <div class="hudtop">
+            <div class="blk"><span class="label" id="hudRoundLabel">Round</span><b id="hudRound">1</b></div>
+            <div class="blk"><span class="label">Cats</span><b class="mono" id="hudCats">0/5</b></div>
+            <div class="blk"><span class="label" id="timeLabel">Time</span><b class="mono timer" id="hudTimer" style="font-size:22px;margin:0">0:00.0</b></div>
+          </div>
+          <div class="lives2" id="hudLives" aria-label="Lives"></div>
+          <div class="rulestrip" id="ruleStrip"></div>
+          <span class="pill mono" id="hudSize" hidden>5×5</span>
+          <span class="pill slips" id="hudSlips" hidden>+0s</span>
         </div>
+        <div class="tracker" id="tracker" aria-label="Cats found per colour"></div>
         <div class="board-wrap">
           <div class="board" id="board" role="grid" aria-label="Puzzle board"></div>
           <div class="overlay" id="overlay" hidden></div>
         </div>
-        <div class="coach" id="coach" aria-live="polite"><svg><use href="#cat"/></svg><div class="msg"><b id="coachTitle">Double-tap a square to place a cat</b><span class="muted" id="coachText">Single-tap marks an X where you're sure there's no cat. Swipe to mark several.</span></div></div>
-        <div class="tools">
-          <button class="btn primary" id="hintBtn">Hint</button>
+        <div class="coach quiet" id="coach" aria-live="polite"><svg><use href="#cat"/></svg><div class="msg"><b id="coachTitle">Double-tap a square to place a cat</b><span class="muted" id="coachText">Single-tap marks an X where you're sure there's no cat. Swipe to mark several.</span></div></div>
+        <div class="toolsbar">
+          <button class="roundbtn" id="hintBtn" aria-label="Hint"><svg><use href="#bulb"/></svg><span class="badge" id="hintBadge" hidden></span></button>
           <button class="btn ghost small" id="leavePractice" hidden>Back</button>
         </div>
         <p class="hint">Double-tap: place cat · Tap: mark ✕ · Swipe: mark many</p>
@@ -430,7 +475,7 @@ function generate(n,r){
   }return null;}
 
 /* ---------- the coach: finds the next simple move and explains it ---------- */
-const COLOR_NAMES=["orange","yellow","green","aqua","blue","purple","pink","red","sage","slate"];
+const COLOR_NAMES=["pink","teal","brown","yellow","green","purple","blue","coral","sage","slate"];
 function ruleOut(n,reg,cells,i){const r=Math.floor(i/n),c=i%n,g=reg[i];
   for(let j=0;j<n*n;j++){if(j===i||cells[j]===2||cells[j]===3||cells[j]===1)continue;const rr=Math.floor(j/n),cc=j%n;
     if(rr===r||cc===c||reg[j]===g||(Math.abs(rr-r)<=1&&Math.abs(cc-c)<=1))cells[j]=1;}}
@@ -494,12 +539,13 @@ const normCode=s=>String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,5
 
 /* ---------- config ---------- */
 const WRONG_COST=5, HINT_COST=10;
-const DEFAULT_CFG={rounds:3,size:5,ramp:false,limit:300,hints:"paid",scoring:"speed"};
+const DEFAULT_CFG={rounds:3,size:6,ramp:false,limit:300,hints:"paid",lives:3,scoring:"speed"};
 const OPTS={
   rounds:[[1,"1"],[3,"3"],[5,"5"],[7,"7"]],
   size:[[4,"4×4"],[5,"5×5"],[6,"6×6"],[7,"7×7"],[8,"8×8"]],
   limit:[[120,"2m"],[180,"3m"],[300,"5m"],[600,"10m"]],
   hints:[["free","Free"],["paid","+10s"],["off","Off"]],
+  lives:[[3,"3"],[5,"5"],[0,"∞"]],
   scoring:[["speed","Fastest wins"],["place","Finishing order"]]
 };
 const sizeLabel=n=>({4:"Warm-up",5:"Easy",6:"Medium",7:"Tricky",8:"Hard"}[n]||"");
@@ -616,7 +662,7 @@ function nextRound(){commit(s=>{if(s.round>=s.cfg.rounds){s.status="final";retur
 function toLobby(cfg){commit(s=>{const c=cfg||s.cfg||DEFAULT_CFG;for(const k of Object.keys(s))delete s[k];s.v=3;s.status="lobby";s.cfg={...c};});}
 function saveDraftCfg(){if(!isHost())return;if(S&&S.status&&S.status!=="lobby")return;commit(s=>{s.status="lobby";s.cfg={...draftCfg};});}
 
-const extraSec=(r,cfg)=>(r.m||0)*WRONG_COST+(cfg.hints==="paid"?(r.h||0)*HINT_COST:0);
+const extraSec=(r,cfg)=>(cfg.lives?0:(r.m||0)*WRONG_COST)+(cfg.hints==="paid"?(r.h||0)*HINT_COST:0);
 function adjTime(r,cfg){return r.out?Infinity:r.t+extraSec(r,cfg)*1000;}
 function harvest(final){
   if(!S||S.status!=="round")return null;
@@ -685,10 +731,10 @@ function startPlay(mode){
   if(!pz)return;
   const n=pz.n,cfg=cfgOf(S);
   play={mode,gid:mode==="round"?S.gameId:null,rid:mode==="round"?S.roundId:null,round:mode==="round"?S.round:0,n,reg:[...pz.reg].map(Number),sol:pz.sol.slice(),
-    cells:new Array(n*n).fill(0),cats:0,mistakes:0,paidHints:0,hints:mode==="round"?cfg.hints:"free",limit:mode==="round"?cfg.limit*1000:0,
+    cells:new Array(n*n).fill(0),cats:0,mistakes:0,paidHints:0,lives:mode==="round"?cfg.lives:3,maxLives:mode==="round"?cfg.lives:3,cleared:new Set(),hints:mode==="round"?cfg.hints:"free",limit:mode==="round"?cfg.limit*1000:0,
     st:mode==="tutorial"?"play":"count",countStart:performance.now(),start:performance.now(),elapsed:0,hint:null,lastCount:null};
   buildBoard();pushProgress();
-  if(mode==="tutorial")tutorialCoach(true);else setCoach("Double-tap a square to place a cat","Single-tap marks an X (tap again to clear it). Swipe across squares to mark several. One cat per colour, row and column, and cats never touch.");
+  if(mode==="tutorial")tutorialCoach(true);else quietCoach();
   render();runTimer();
 }
 function stopTimer(){cancelAnimationFrame(timerRAF);timerRAF=null;}
@@ -708,10 +754,6 @@ function buildBoard(){
   for(let i=0;i<n*n;i++){
     const r=Math.floor(i/n),c=i%n,g=play.reg[i];
     const d=el("button","cell");d.dataset.i=i;d.style.setProperty("--rc",`var(--r${g})`);
-    d.style.borderTopWidth=r===0?"0":(play.reg[i-n]!==g?"3px":"1px");
-    d.style.borderLeftWidth=c===0?"0":(play.reg[i-1]!==g?"3px":"1px");
-    if(r>0&&play.reg[i-n]===g)d.style.borderTopColor="color-mix(in srgb,var(--edge) 22%,transparent)";
-    if(c>0&&play.reg[i-1]===g)d.style.borderLeftColor="color-mix(in srgb,var(--edge) 22%,transparent)";
     b.appendChild(d);
   }
   paintBoard();
@@ -721,10 +763,41 @@ function paintCell(i){
   d.classList.toggle("wrong",v===3);
   const h=play.hint;d.classList.toggle("glow",!!(h&&h.glow.includes(i)));d.classList.toggle("grp",!!(h&&h.group.includes(i)));d.classList.remove("why");
   if(v===1||v===3||v===4)d.appendChild(el("span",v===1?"x auto":"x"));
-  if(v===2)d.appendChild(catSvg());
+  if(v===2){const t=document.createElementNS(SVGNS,"svg");t.setAttribute("viewBox","0 0 32 32");t.setAttribute("class","tux");const u=document.createElementNS(SVGNS,"use");u.setAttribute("href","#tux");t.appendChild(u);d.appendChild(t);}
   d.setAttribute("aria-label",`Row ${Math.floor(i/play.n)+1}, column ${i%play.n+1}, ${COLOR_NAMES[play.reg[i]]} patch${v===2?", cat":v===4?", marked X":v?", crossed off":""}`);
 }
-function paintBoard(){for(let i=0;i<play.n*play.n;i++)paintCell(i);}
+function paintBoard(){for(let i=0;i<play.n*play.n;i++)paintCell(i);renderTracker();checkClears();}
+function useSvg(id,cls,color){const t=document.createElementNS(SVGNS,"svg");t.setAttribute("viewBox","0 0 32 32");if(cls)t.setAttribute("class",cls);if(color)t.style.color=color;const u=document.createElementNS(SVGNS,"use");u.setAttribute("href","#"+id);t.appendChild(u);return t;}
+function renderTracker(){
+  const box=$("#tracker");if(!box||!play)return;box.textContent="";
+  for(let g=0;g<play.n;g++){const found=play.reg.some((rg,i)=>rg===g&&play.cells[i]===2);
+    const svg=found?useSvg("tux"):useSvg("cat",null,`var(--r${g})`);svg.setAttribute("aria-label",`${COLOR_NAMES[g]} ${found?"found":"not found"}`);box.appendChild(svg);}
+}
+// "Clear!" when a whole row, column or colour is resolved (every square has a cat or a cross)
+function checkClears(){
+  if(!play||!play.cleared)return;const n=play.n;const groups=[];
+  for(let k=0;k<n;k++){groups.push(["r"+k,[...Array(n)].map((_,c)=>k*n+c)]);groups.push(["c"+k,[...Array(n)].map((_,r)=>r*n+k)]);groups.push(["g"+k,[...Array(n*n).keys()].filter(i=>play.reg[i]===k)]);}
+  for(const [key,cells] of groups){
+    const done=cells.every(i=>play.cells[i]!==0);
+    if(done&&!play.cleared.has(key)){play.cleared.add(key);if(play.ready)showClear(cells[cells.length-1]);}
+    else if(!done&&play.cleared.has(key))play.cleared.delete(key);
+  }
+  play.ready=true;
+}
+let clearCount=0;
+function showClear(i){
+  if(clearCount>2)return;clearCount++;setTimeout(()=>clearCount--,700);
+  const wrap=$(".board-wrap"),cell=$("#board").children[i];if(!cell)return;
+  const wr=wrap.getBoundingClientRect(),cr=cell.getBoundingClientRect();
+  const t=el("div","clear-tag","Clear!");t.style.left=`${cr.left-wr.left+cr.width/2}px`;t.style.top=`${cr.top-wr.top+cr.height}px`;
+  wrap.appendChild(t);setTimeout(()=>t.remove(),1100);
+}
+function say(msg){const wrap=$(".board-wrap");const old=wrap.querySelector(".say");if(old)old.remove();const t=el("div","say",msg);wrap.appendChild(t);setTimeout(()=>t.remove(),1800);}
+function quietCoach(){$("#coach").classList.add("quiet");}
+function autoCross(i){const n=play.n,r=Math.floor(i/n),c=i%n;
+  for(let j=0;j<n*n;j++){if(j===i||play.cells[j]===2||play.cells[j]===3||play.cells[j]===1)continue;const rr=Math.floor(j/n),cc=j%n;
+    if(rr===r||cc===c||(Math.abs(rr-r)<=1&&Math.abs(cc-c)<=1))play.cells[j]=1;}}
+function hintView(){const v=play.cells.map(x=>x===4?0:x);for(let i=0;i<v.length;i++)if(v[i]===2)ruleOut(play.n,play.reg,v,i);return v;}
 function setHint(h){play.hint=h;paintBoard();}
 function setCoach(title,text,tone){$("#coachTitle").textContent=title;$("#coachText").textContent=text||"";$("#coach").className="coach"+(tone?" tone-"+tone:"");}
 const canAct=()=>play&&play.st==="play";
@@ -742,47 +815,52 @@ function whyCrossed(i){
 function placeCat(i){
   if(!canAct())return;const n=play.n,v=play.cells[i];
   if(v===2)return;
-  if(v===1||v===3){$("#board").children[i].classList.add("why");setCoach("That square is crossed off",whyCrossed(i));return;}
+  if(v===1||v===3){$("#board").children[i].classList.add("why");if(play.mode==="tutorial")setCoach("That square is crossed off",whyCrossed(i));else say(whyCrossed(i));return;}
   if(v===4)play.cells[i]=0;
   const r=Math.floor(i/n),c=i%n;
   if(play.sol[r]===c){
-    play.cells[i]=2;play.cats++;ruleOut(n,play.reg,play.cells,i);play.hint=null;paintBoard();
-    if(play.cats===n){play.st="done";play.elapsed=performance.now()-play.start;stopTimer();$("#hudTimer").textContent=fmt(play.elapsed);renderOverlay();if(play.mode==="round")burst(60);}
+    play.cells[i]=2;play.cats++;autoCross(i);play.hint=null;paintBoard();
+    if(play.cats===n){quietCoach();play.st="done";play.elapsed=performance.now()-play.start;stopTimer();$("#hudTimer").textContent=fmt(play.elapsed);renderOverlay();if(play.mode==="round")burst(60);}
     else if(play.mode==="tutorial")tutorialCoach(false);
-    else setCoach(`Nice. ${play.cats} of ${n} cats placed`,"Faded crosses are squares your cat ruled out. Look for a patch, row or column with one open square left.","good");
+    else quietCoach();
   }else{
     play.cells[i]=3;play.mistakes++;paintCell(i);
     const d=$("#board").children[i];d.classList.remove("flash");void d.offsetWidth;d.classList.add("flash");
     if(navigator.vibrate)try{navigator.vibrate(50)}catch(e){}
+    const b=el("div","burst","💔");d.appendChild(b);setTimeout(()=>{b.remove();},650);
     if(play.mode==="tutorial")setCoach("Not that one","Try the glowing square instead. The coach explains why it has to be there.","bad");
-    else setCoach(`No cat fits there (+${WRONG_COST}s)`,play.hints!=="off"?"It would leave another patch, row or column with nowhere to go. Stuck? Tap Hint.":"It would leave another patch, row or column with nowhere to go.","bad");
+    else if(play.maxLives>0){play.lives=Math.max(0,play.lives-1);renderLives();
+      if(play.lives===1)say("Meow! Only one chance left!");
+      if(play.lives===0){play.st="time";play.reason="lives";play.elapsed=performance.now()-play.start;stopTimer();setTimeout(renderOverlay,500);}}
+    else say(`No cat there (+${WRONG_COST}s)`);
+    paintBoard();
   }
-  renderSlips();pushProgress();
+  renderSlips();renderLives();pushProgress();
 }
 function giveHint(){
   if(!canAct())return;
   if(play.hints==="off"){setCoach("Hints are off this game","The host turned hints off. Look for a patch, row or column with only one open square.");return;}
-  let s=nextStep(play.n,play.reg,play.cells.map(v=>v===4?0:v));
+  let s=nextStep(play.n,play.reg,hintView());
   if(!s){const r=play.sol.findIndex((c,row)=>play.cells[row*play.n+c]!==2);const cell=r*play.n+play.sol[r];
     s={type:"cat",cell,group:[cell],title:"Here's a free cat",text:"This spot needs a longer chain of reasoning, so the coach is giving you this one. Double-tap the glowing square."};}
   if(play.mode==="round"&&play.hints==="paid"){play.paidHints++;renderSlips();pushProgress();}
   if(s.type==="cat")setHint({glow:[s.cell],group:s.group});else{s.cells.forEach(i=>play.cells[i]=1);setHint({glow:s.cells,group:s.group});}
-  setCoach(s.title,s.text,"hint");
+  setCoach(s.title,s.text,"hint");renderHintBadge();
 }
 function tutorialCoach(first){
-  let s=nextStep(play.n,play.reg,play.cells.map(v=>v===4?0:v));
-  for(let g=0;s&&s.type==="cross"&&g<20;g++){s.cells.forEach(i=>play.cells[i]=1);s=nextStep(play.n,play.reg,play.cells.map(v=>v===4?0:v));}
+  let s=nextStep(play.n,play.reg,hintView());
+  for(let g=0;s&&s.type==="cross"&&g<20;g++){s.cells.forEach(i=>play.cells[i]=1);s=nextStep(play.n,play.reg,hintView());}
   if(!s){setCoach("Keep going","Tap Hint if you want a nudge.");return;}
   setHint({glow:[s.cell],group:s.group});
   if(first){setCoach("Welcome! Find the 4 hidden cats","One cat per colour patch, one per row and column, and cats never touch. Double-tap the glowing square to place your first cat.","hint");
     setTimeout(()=>{if(play&&play.mode==="tutorial"&&play.cats===0)setCoach(s.title,s.text,"hint");},3500);return;}
-  setCoach(play.cats===1?"See the crosses? Your cat ruled out its row, column, patch and neighbours.":s.title,play.cats===1?`${s.title}. ${s.text}`:s.text,"hint");
+  setCoach(play.cats===1?"See the crosses? Your cat ruled out its row, column and the 8 squares around it.":s.title,play.cats===1?`${s.title}. ${s.text}`:s.text,"hint");
 }
 function tapCell(i){
   if(!canAct())return;const v=play.cells[i];
-  if(v===0){play.cells[i]=4;paintCell(i);}
-  else if(v===4){play.cells[i]=0;paintCell(i);}
-  else if(v===1||v===3){$("#board").children[i].classList.add("why");setCoach("That square is crossed off",whyCrossed(i));}
+  if(v===0){play.cells[i]=4;paintCell(i);checkClears();}
+  else if(v===4){play.cells[i]=0;paintCell(i);checkClears();}
+  else if(v===1||v===3){$("#board").children[i].classList.add("why");if(play.mode==="tutorial")setCoach("That square is crossed off",whyCrossed(i));else say(whyCrossed(i));}
 }
 let lastTap={i:-1,t:0,prev:0};
 function onTap(i){
@@ -800,7 +878,7 @@ boardEl.addEventListener("pointerdown",e=>{const d=e.target.closest(".cell");if(
   drag={start:i,moved:false,mode:play.cells[i]===4?"erase":"mark",seen:new Set(),id:e.pointerId};try{boardEl.setPointerCapture(e.pointerId)}catch(_){}});
 boardEl.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;const t=document.elementFromPoint(e.clientX,e.clientY);const d=t&&t.closest?t.closest("#board .cell"):null;if(!d)return;
   const i=Number(d.dataset.i);if(i===drag.start&&!drag.moved)return;if(!drag.moved){drag.moved=true;swipeApply(drag.start);}swipeApply(i);});
-boardEl.addEventListener("pointerup",e=>{if(!drag||e.pointerId!==drag.id)return;const dd=drag;drag=null;if(!dd.moved)onTap(dd.start);else lastTap={i:-1,t:0,prev:0};});
+boardEl.addEventListener("pointerup",e=>{if(!drag||e.pointerId!==drag.id)return;const dd=drag;drag=null;if(!dd.moved)onTap(dd.start);else{lastTap={i:-1,t:0,prev:0};checkClears();}});
 boardEl.addEventListener("pointercancel",()=>{drag=null;});
 boardEl.addEventListener("click",e=>{if(e.detail!==0)return;const d=e.target.closest(".cell");if(d)onTap(Number(d.dataset.i));});
 $("#board").addEventListener("keydown",e=>{
@@ -846,7 +924,7 @@ function renderHome(){
 }
 function cfgChips(cfg){
   const box=$("#cfgSummary");box.textContent="";
-  for(const t of [`${cfg.rounds} round${cfg.rounds>1?"s":""}`,`${cfg.size}×${cfg.size} ${sizeLabel(cfg.size)}${cfg.ramp?", growing":""}`,`${Math.round(cfg.limit/60)} min per round`,cfg.hints==="free"?"Free hints":cfg.hints==="paid"?"Hints +10s":"No hints",cfg.scoring==="speed"?"Fastest wins":"Finishing order"])box.appendChild(el("span","pill",t));
+  for(const t of [`${cfg.rounds} round${cfg.rounds>1?"s":""}`,`${cfg.size}×${cfg.size} ${sizeLabel(cfg.size)}${cfg.ramp?", growing":""}`,`${Math.round(cfg.limit/60)} min per round`,cfg.hints==="free"?"Free hints":cfg.hints==="paid"?"Hints +10s":"No hints",cfg.lives?`${cfg.lives} lives`:"Unlimited lives",cfg.scoring==="speed"?"Fastest wins":"Finishing order"])box.appendChild(el("span","pill",t));
 }
 function renderLobby(){
   $("#lobbyCode").textContent=code||"-----";
@@ -861,7 +939,7 @@ function renderLobby(){
   const status=S&&S.status;
   $("#waitNote").textContent=status==="round"?"A round is in progress. Your board will appear in a moment.":host?"Players see these settings as you change them.":"Waiting for the host to start. New here? Try the 60-second tutorial.";
   if(host){
-    for(const [key,id] of [["rounds","#sRounds"],["size","#sSize"],["limit","#sLimit"],["hints","#sHints"],["scoring","#sScoring"]])
+    for(const [key,id] of [["rounds","#sRounds"],["size","#sSize"],["limit","#sLimit"],["hints","#sHints"],["lives","#sLives"],["scoring","#sScoring"]])
       [...$(id).children].forEach(b=>b.setAttribute("aria-pressed",String(String(draftCfg[key])===b.dataset.v)));
     $("#sRamp").checked=!!draftCfg.ramp;
     $("#scoringHelp").textContent=draftCfg.scoring==="speed"?"Fastest finish scores 1000, other finishers 400 to 1000 depending on time. Anyone who runs out of time still gets points for each cat placed.":"1st place scores one point per player, 2nd one less, and so on. Unfinished boards rank by cats placed.";
@@ -869,10 +947,22 @@ function renderLobby(){
     const n=on.filter(p=>p.plays).length;$("#startNote").textContent=n<2?"Waiting for players to join.":`${n} ready to play.`;
   }
 }
+function renderLives(){
+  const box=$("#hudLives");if(!box||!play)return;box.textContent="";
+  box.hidden=play.mode==="tutorial";
+  if(play.maxLives===0){box.appendChild(useSvg("fish"));box.appendChild(el("span","mono","∞"));return;}
+  for(let k=0;k<play.maxLives;k++){const f=useSvg("fish",k>=play.lives?"gone":null);box.appendChild(f);}
+}
+function renderHintBadge(){const b=$("#hintBadge");if(!play)return;
+  if(play.mode==="round"&&play.hints==="paid"){b.hidden=false;b.textContent="+10s";}else b.hidden=true;}
+function renderRuleStrip(){
+  const box=$("#ruleStrip");if(box.childElementCount)return;
+  for(const [txt,ic] of [["1 cat per colour","cat"],["1 cat per row & column","cat"],["Cats can't touch","tux"]]){const d=el("div");d.appendChild(useSvg(ic,null,"var(--accent)"));d.appendChild(el("span",null,txt));box.appendChild(d);}
+}
 function renderSlips(){
-  const s=$("#hudSlips");if(!play)return;
+  const s=$("#hudSlips");if(!play)return;$("#hudCats").textContent=`${play.cats}/${play.n}`;
   const extra=play.mistakes*WRONG_COST+(play.hints==="paid"&&play.mode==="round"?play.paidHints*HINT_COST:0);
-  s.hidden=play.mode==="tutorial";s.textContent=`+${extra}s`;
+  s.hidden=true;$("#timeLabel").textContent=extra&&play.mode==="round"?`Time +${extra}s`:"Time";
 }
 function renderOverlay(count){
   const o=$("#overlay");if(!play){o.hidden=true;return;}
@@ -886,7 +976,7 @@ function renderOverlay(count){
     d.appendChild(el("h2",null,play.mode==="tutorial"?"You've got it!":"Every cat has its corner!"));
     if(play.mode==="tutorial")d.appendChild(el("div","muted","That's the whole game. Real boards are a bit bigger, and the Hint button is there whenever you're stuck."));
     else{const extra=play.mistakes*WRONG_COST+(play.mode==="round"&&play.hints==="paid"?play.paidHints*HINT_COST:0);d.appendChild(el("div","mono",`${fmt(play.elapsed)}${extra?`  + ${extra}s`:""}`));}
-  }else{d.appendChild(el("h2",null,"Time's up"));d.appendChild(el("div","muted",`You placed ${play.cats} of ${play.n} cats. They still count for points.`));}
+  }else{d.appendChild(el("h2",null,play.reason==="lives"?"Out of lives":"Time's up"));d.appendChild(el("div","muted",`You placed ${play.cats} of ${play.n} cats. They still count for points.`));}
   if(play.mode!=="round"){
     const row=el("div","row");row.style.justifyContent="center";
     const b=el("button","btn primary",play.mode==="tutorial"?"Try a practice board":"Another practice board");b.onclick=()=>startPlay("practice");row.appendChild(b);
@@ -896,14 +986,16 @@ function renderOverlay(count){
 }
 function renderGame(){
   if(!play)return;
-  $("#hudRound").textContent=play.mode==="tutorial"?"Tutorial":play.mode==="practice"?"Practice":`Round ${play.round} of ${cfgOf(S).rounds}`;
+  $("#hudRoundLabel").textContent=play.mode==="round"?"Round":"Mode";
+  $("#hudRound").textContent=play.mode==="tutorial"?"Tutorial":play.mode==="practice"?"Practice":`${play.round}/${cfgOf(S).rounds}`;
   $("#hudSize").textContent=`${play.n}×${play.n} · ${sizeLabel(play.n)}`;
   $("#leavePractice").hidden=play.mode==="round";
   $("#hintBtn").hidden=play.hints==="off";
-  $("#hintBtn").textContent=play.mode==="round"&&play.hints==="paid"?`Hint (+${HINT_COST}s)`:"Hint";
+
   $("#hostBarGame").hidden=!(isHost()&&play.mode==="round");
   $("#hudTimer").hidden=play.mode==="tutorial";
   $("#raceCard").hidden=play.mode!=="round";
+  renderLives();renderRuleStrip();renderHintBadge();renderTracker();
   renderSlips();renderOverlay();renderRace("#race","#raceCount");renderStand("#miniStand",true);
   $("#standingsCard").hidden=play.mode!=="round"||!sortedTotals().length;
 }
@@ -967,7 +1059,7 @@ function renderFinal(){
 /* ---------- controls ---------- */
 function buildSeg(id,key){const box=$(id);box.textContent="";for(const [v,lab] of OPTS[key]){const b=el("button",null,lab);b.type="button";b.dataset.v=String(v);b.setAttribute("aria-pressed","false");b.onclick=()=>{draftCfg[key]=typeof v==="number"?Number(b.dataset.v):b.dataset.v;saveDraftDebounced();render();};box.appendChild(b);}}
 let draftT;function saveDraftDebounced(){draftTouched=true;clearTimeout(draftT);draftT=setTimeout(saveDraftCfg,500);}
-buildSeg("#sRounds","rounds");buildSeg("#sSize","size");buildSeg("#sLimit","limit");buildSeg("#sHints","hints");buildSeg("#sScoring","scoring");
+buildSeg("#sRounds","rounds");buildSeg("#sSize","size");buildSeg("#sLimit","limit");buildSeg("#sHints","hints");buildSeg("#sLives","lives");buildSeg("#sScoring","scoring");
 $("#sRamp").addEventListener("change",e=>{draftCfg.ramp=e.target.checked;saveDraftDebounced();render();});
 for(let i=0;i<8;i++){const b=el("button","coat");b.type="button";b.setAttribute("aria-label",`Cat colour ${i+1}`);b.appendChild(catSvg(i));b.onclick=()=>{me.coat=i;store.set("kc.coat",String(i));render();};$("#coats").appendChild(b);}
 $("#codeIn").addEventListener("input",e=>{const v=normCode(e.target.value);if(v!==e.target.value)e.target.value=v;});
